@@ -2,7 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.sql.PreparedStatement;
 
 public class JdbcLogin {
     public String Login;
@@ -37,9 +37,16 @@ public class JdbcLogin {
         try
         {
 
-            Statement st = conn.createStatement();
-            st.executeUpdate("INSERT INTO datos  (from, subject, date1)" +
-                      "  VALUES  ('" +message.getFrom()+ "','" +message.getSubject()+ "','" +message.getDate()+"');");
+java.sql.Date sqlDate= new java.sql.Date(message.getDate().getTime());
+            String query = " insert into datos (fromEmail,subject,date1)"
+                    + " values (?,?,?)";
+
+            // create the mysql insert preparedstatement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString (1, message.getFrom());
+            preparedStmt.setString (2, message.getSubject());
+            preparedStmt.setDate (3, sqlDate);
+            preparedStmt.execute();
             conn .close();
         }
         catch (SQLException ex)

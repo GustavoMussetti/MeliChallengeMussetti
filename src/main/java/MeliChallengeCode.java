@@ -86,9 +86,9 @@ public class MeliChallengeCode {
             MessagesToDataBase mes = new MessagesToDataBase();
             mes.setFrom(message.getPayload().getHeaders().get(18).getValue());
             mes.setSubject(message.getPayload().getHeaders().get(20).getValue());
+
             String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
             //SimpleDateFormat formatter = new SimpleDateFormat();
-
             SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);
             try {
                 Date date = formatter.parse(message.getPayload().getHeaders().get(23).getValue());
