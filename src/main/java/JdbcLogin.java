@@ -15,7 +15,7 @@ public class JdbcLogin {
 
 
         String serverName = "localhost";
-        String mydatabase = "melichalenge";
+        String mydatabase = "";
         String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
 
         String username = "root";
@@ -29,7 +29,24 @@ public class JdbcLogin {
             System.out.println("Error" + ex);
 
         }
+
+        try
+        {
+            PreparedStatement ps = conn.prepareStatement("CREATE DATABASE IF NOT EXISTS melichalenge;");
+            ps.executeUpdate();
+            ps.close();
+            PreparedStatement ps2 = conn.prepareStatement("CREATE TABLE IF NOT EXISTS melichalenge.datos(id SERIAL NOT NULL PRIMARY KEY,fromEmail varchar(225),subject varchar(225),date1 Date)");
+            ps2.executeUpdate();
+            ps2.close();
+
+        }
+        catch (SQLException ex)
+        {
+            System.err.println(ex.getMessage());
+        }
     }
+
+
 
     public void doInsert(MessagesToDataBase message)
     {
@@ -38,7 +55,7 @@ public class JdbcLogin {
         {
 
 java.sql.Date sqlDate= new java.sql.Date(message.getDate().getTime());
-            String query = " insert into datos (fromEmail,subject,date1)"
+            String query = " insert into melichalenge.datos (fromEmail,subject,date1)"
                     + " values (?,?,?)";
 
             // create the mysql insert preparedstatement
